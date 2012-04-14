@@ -107,7 +107,7 @@ def record():
             })
     query_db("INSERT INTO jokes ('joke', 'track_id', 'rank') values  (?, ?, ?)", [track.title, track.id, 0])
 
-print track.title
+
 @app.route('/jokes/random', methods=['GET'])
 def random_joke():
     joke = query_db('SELECT * FROM jokes ORDER BY RANDOM() LIMIT 1;', one=True)

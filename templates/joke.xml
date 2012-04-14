@@ -2,6 +2,6 @@
     <Say>Welcome to the Eighties Joke Line.</Say>
     <Play>{{ joke.url}}</Play>
     <Say>Would you like to tell me a joke? Press 1 for yes and 2 for no</Say>
-    <Gather action="/joke/" timeout="2" numDigits="1"/>
+    <Gather action="/jokes" timeout="2" numDigits="1"/>
 </Response>
 

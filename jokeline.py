@@ -1,5 +1,5 @@
 import sqlite3
-from flask import abort, g, flash, make_response, redirect, request, render_template, url_for, Flask
+from flask import g, make_response, redirect, request, render_template, url_for, Flask
 import soundcloud
 
 
@@ -56,13 +56,26 @@ def index():
 
 
 #Twilio stuff
+
+def get_sc_url(sc_id):
+    track = sc_client.get('/tracks/%d' % sc_id)
+    url = track.download_url + '?client_id=' + SOUNDCLOUD_ID
+    return url
+
+
+def make_xml_response(template, **context):
+    response = make_response(render_template(template, **context))
+    response.headers['Content-Type'] = 'text/xml'
+    return response
+
+
 @app.route('/twilio/voice', methods=['GET', 'POST'])
 def twilio_voice():
-    track = sc_client.get('/resolve', url='http://soundcloud.com/jokeline/untitled-recording')
-    url = track.download_url + '?client_id=' + SOUNDCLOUD_ID
-    resp = make_response(render_template("twilio/voice.xml", joke_url=url))
-    resp.headers['Content-Type'] = 'text/xml'
-    return resp
+    """
+    A test URL.
+    """
+    url = get_sc_url(43112949)
+    return make_xml_response("twilio/voice.xml", joke_url=url)
 
 
 @app.route('/jokes/', methods=['GET'])
@@ -71,24 +84,25 @@ def list_jokes():
     return render_template("jokes.xml", jokes=jokes)
 
 
-@app.route('/jokes/random', methods=['GET'])
-def random_joke():
-    joke = query_db('SELECT * FROM jokes ORDER BY RANDOM() LIMIT 1;', one=True)
-    return render_template("joke.xml", joke=joke)
-
-
-@app.route('/jokes/<int:joke_id>', methods=['GET'])
-def get_joke():
-    joke = query_db('SELECT * FROM jokes WHERE id = ? LIMIT 1;', [joke_id], one=True)
-    return render_template("joke.xml", joke=joke)
-
-
 app.route('/jokes/', methods=['POST'])
 def create_joke():
     # Pull data out of XML request.
     # Create a new joke.
     print request
     print request.form["Digits"]
+    return render_template("joke.xml", joke=joke)
+
+
+@app.route('/jokes/random', methods=['GET'])
+def random_joke():
+    joke = query_db('SELECT * FROM jokes ORDER BY RANDOM() LIMIT 1;', one=True)
+    joke['url'] = get_sc_url(joke['track_id'])
+    return make_xml_response("joke.xml", joke=joke)
+
+
+@app.route('/jokes/<int:joke_id>', methods=['GET'])
+def get_joke():
+    joke = query_db('SELECT * FROM jokes WHERE id = ? LIMIT 1;', [joke_id], one=True)
     return render_template("joke.xml", joke=joke)
 
 

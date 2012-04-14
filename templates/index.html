@@ -9,12 +9,7 @@
 
     <!-- Le styles -->
     <link href="/static/css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-    </style>
-    <link href="/static/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/static/css/jokeline.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -30,6 +25,7 @@
 
   <body>
 
+    <!--
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -45,10 +41,11 @@
               <li><a href="#about">About</a></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
-          </div><!--/.nav-collapse -->
+          </div>
         </div>
       </div>
     </div>
+    -->
 
     <div class="container jokes">
 
@@ -64,7 +61,10 @@
         {% endfor %}
       </ol>
       {% else %}
-      <p>Tragedy: there are no awesome jokes.</p>
+      <p class='tragedy'>
+        <strong>Tragedy</strong>: there are no awesome jokes. You should call
+        <span class="tel">+1-647-931-1254</span> and tell us one.
+      </p>
       {% endif %}
 
     </div> <!-- /container -->
@@ -72,19 +72,7 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap-transition.js"></script>
-    <script src="../assets/js/bootstrap-alert.js"></script>
-    <script src="../assets/js/bootstrap-modal.js"></script>
-    <script src="../assets/js/bootstrap-dropdown.js"></script>
-    <script src="../assets/js/bootstrap-scrollspy.js"></script>
-    <script src="../assets/js/bootstrap-tab.js"></script>
-    <script src="../assets/js/bootstrap-tooltip.js"></script>
-    <script src="../assets/js/bootstrap-popover.js"></script>
-    <script src="../assets/js/bootstrap-button.js"></script>
-    <script src="../assets/js/bootstrap-collapse.js"></script>
-    <script src="../assets/js/bootstrap-carousel.js"></script>
-    <script src="../assets/js/bootstrap-typeahead.js"></script>
-
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="/static/js/bootstap.min.js</script>
   </body>
 </html>

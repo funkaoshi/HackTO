@@ -39,7 +39,6 @@ def query_db(query, args=(), one=False):
                for idx, value in enumerate(row)) for row in cur.fetchall()]
     return (rv[0] if rv else None) if one else rv
 
-
 # The Application
 
 @app.route('/')
@@ -89,22 +88,25 @@ def jokes():
             #decline
             return make_xml_response("decline.xml")
 
+
 @app.route('/jokes/record', methods=['POST'])
 def record():
     joke_url = request.form['RecordingUrl']
     j = requests.get(joke_url)
     fh, filename = tempfile.mkstemp()
     f = open(filename, 'w')
-    f.write(j.raw.read())	
+    f.write(j.raw.read())
     f.close()
     track = sc_client.post('/tracks', track={
             'title': 'joke',
             'sharing': 'public',
             'asset_data': open(filename, 'rb')
             })
-    query_db("INSERT INTO jokes ('joke', 'track_id', 'rank') values  (?, ?, ?)", [track.title, track.id, 0])
-    
+    g.db.execute("INSERT INTO jokes ('joke', 'track_id', 'rank') values (?, ?, ?)" %
+            [track.title, track.id, 0])
+    g.db.commit()
     return make_xml_response("decline.xml")
+
 
 @app.route('/jokes/random', methods=['GET'])
 def random_joke():

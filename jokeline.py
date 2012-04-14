@@ -78,20 +78,23 @@ def twilio_voice():
     return make_xml_response("twilio/voice.xml", joke_url=url)
 
 
-@app.route('/jokes/', methods=['GET'])
-def list_jokes():
-    jokes = query_db('SELECT * FROM jokes ORDER BY rank')
-    return render_template("jokes.xml", jokes=jokes)
+@app.route('/jokes/', methods=['GET', 'POST'])
+def jokes():
+    if request.method == 'GET':
+        jokes = query_db('SELECT * FROM jokes ORDER BY rank')
+        return make_xml_response("jokes.xml", jokes=jokes)
+    elif request.method == 'POST':
+        # Create a new joke.
+        if request.form['Digits'] == '1':
+            #user wants to record
+            return make_xml_response("record.xml")
+        else:
+            #decline
+            return make_xml_response("decline.xml")
 
-
-app.route('/jokes/', methods=['POST'])
-def create_joke():
-    # Pull data out of XML request.
-    # Create a new joke.
-    print request
-    print request.form["Digits"]
-    return render_template("joke.xml", joke=joke)
-
+@app.route('/jokes/record', methods=['POST'])
+def record():
+    
 
 @app.route('/jokes/random', methods=['GET'])
 def random_joke():

@@ -1,4 +1,4 @@
 <Response>
     <Say>Welcome to the Eighties Joke Line.  Your joke is:</Say>
-    <Play>{{ joke_url }}
+    <Play>{{ joke_url }}</Play>
 </Response>

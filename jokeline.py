@@ -1,5 +1,5 @@
 import sqlite3
-from flask import abort, g, flash, redirect, request, render_template, url_for, Flask
+from flask import abort, g, flash, make_response, redirect, request, render_template, url_for, Flask
 
 
 # configuration
@@ -49,6 +49,13 @@ def index():
     jokes = query_db('select * from jokes order by rank')
     return render_template("index.html", jokes=jokes)
 
+
+#Twilio stuff
+@app.route('/twilio/voice', methods=['GET', 'POST'])
+def twilio_voice():
+    resp = make_response(render_template("twilio/voice.xml"))
+    resp.headers['Content-Type'] = 'text/xml'
+    return resp
 
 if __name__ == '__main__':
     app.run("0.0.0.0")

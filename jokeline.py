@@ -55,8 +55,9 @@ def index():
     """
     Returns a list of jokes.
     """
-    jokes = query_db('SELECT * FROM jokes ORDER BY rank')
-    return render_template("index.html", jokes=jokes)
+    j = query_db('SELECT * FROM jokes ORDER BY RANDOM() LIMIT 1;', one=True)
+    joke = get_sc(j['track_id'])
+    return render_template("index.html", joke=joke)
 
 
 #Twilio stuff
@@ -66,6 +67,9 @@ def get_sc_url(sc_id):
     url = track.stream_url + '?client_id=' + app.config['SOUNDCLOUD_ID']
     return url
 
+def get_sc(sc_id):
+    track = sc_client.get('/tracks/%d' % sc_id)
+    return track
 
 def make_xml_response(template, **context):
     response = make_response(render_template(template, **context))

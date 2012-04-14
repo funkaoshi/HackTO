@@ -71,7 +71,7 @@ def list_jokes():
     return render_template("jokes.xml", jokes=jokes)
 
 
-@app.route('/jokes/random', methods=['GET']):
+@app.route('/jokes/random', methods=['GET'])
 def random_joke():
     joke = query_db('SELECT * FROM jokes ORDER BY RANDOM() LIMIT 1;', one=True)
     return render_template("joke.xml", joke=joke)

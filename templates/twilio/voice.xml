@@ -1,3 +1,4 @@
 <Response>
-    <Say>Hello World</Say>
+    <Say>Welcome to the Eighties Joke Line.  Your joke is:</Say>
+    <Play>{{ joke_url }}
 </Response>

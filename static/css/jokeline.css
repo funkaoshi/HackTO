@@ -1,22 +1,54 @@
 body {
-    padding: 60px;
+  background: url('/static/img/gradient_squares.png');
+  padding: 60px;
+  padding-top: 40px;
+}
+.container {
+  overflow: hidden;
 }
 .jokes {
-    margin: 0 auto;
-    width:640px;
+  margin: 0 auto;
+  width: 640px;
 }
 .jokes h1 {
-    font-size: 48px;
-    margin-bottom: 26px;
+  font-size: 48px;
+  margin-bottom: 26px;
+  text-align: center;
+  border-color: #999;
 }
-
-.jokes p, .jokes li {
-    font-size: 16px;
-    line-height: 1.5;
-    margin-bottom: 16px;
+.jokes p,
+.jokes li {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 16px;
 }
-
 .jokes ol {
-    list-style: none;
-    margin-left: 0;
+  list-style: none;
+  margin-left: 0;
+}
+.joke {
+  width: 500px;
+  margin-bottom: 30px;
+}
+.joke .meta {
+  color: #777;
+  display: block;
+  font-size: 12px;
+  overflow: hidden;
+}
+.joke .from {
+  margin-bottom: 3px;
+  float: left;
+}
+.joke .time {
+  float: right;
+}
+.sc-player {
+  width: 500px;
+  margin-bottom: 0;
+}
+.label {
+  background: #f66dc7;
+  font-size: 14px;
+  vertical-align: inherit;
 }

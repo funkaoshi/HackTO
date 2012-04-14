@@ -9,51 +9,33 @@
 
     <!-- Le styles -->
     <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/sc-player-minimal.css" type="text/css">
     <link href="/static/css/jokeline.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script type="text/javascript" src="/static/js/soundcloud.player.api.js"></script>
+    <script type="text/javascript" src="/static/js/sc-player.js"></script>
 
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="../assets/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
   </head>
 
   <body>
 
-    <!--
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="#">80s Joke Line</a>
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li class="active"><a href="#">Jokes</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    -->
-
     <div class="container jokes">
 
-      <h1>It's the 80s Joke Line</h1>
+      <h1><img src="/static/img/logo.png" alt="80s Joke Line" /></h1>
       <p>
         Now you can listen to the hottest jokes on your telephone. According
         to listeners like you, these are the hottest jokes right now!
       <p>
+      <p class="tragedy">
+        <strong>Tragedy</strong>: there are no awesome jokes. You should call <span class="label">(647) 931-1253</span>  and tell us one.
+      </p>
+
       {% if jokes %}
       <ol>
         {% for joke in jokes %}
@@ -61,18 +43,30 @@
         {% endfor %}
       </ol>
       {% else %}
-      <p class='tragedy'>
-        <strong>Tragedy</strong>: there are no awesome jokes. You should call
-        <span class="tel">(647) 931-1253</span> and tell us one.
-      </p>
+      <ol>
+        <li class="joke">
+            <a href="http://soundcloud.com/matas/hobnotropic" class="sc-player">What a joke</a>
+            <span class="meta"><i class="icon-map-marker"></i> via some random person in Toronto</span>
+        </li>
+        <li class="joke">
+            <a href="http://soundcloud.com/matas/hobnotropic" class="sc-player">What a joke</a>
+            <span class="meta"><i class="icon-map-marker"></i> via some random person in Toronto</span>
+        </li>
+        <li class="joke">
+            <a href="http://soundcloud.com/matas/hobnotropic" class="sc-player">What a joke</a>
+            <div class="meta">
+                <div class="from">
+                    <i class="icon-map-marker"></i> via some random person in Toronto
+                </div>
+                <div class="time">
+                    <i class="icon-time"></i> 5 minutes ago
+                </div>
+            </div>
+        </li>
+      </ol>
       {% endif %}
 
     </div> <!-- /container -->
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script src="/static/js/bootstap.min.js</script>
   </body>
 </html>

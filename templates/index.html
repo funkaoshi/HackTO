@@ -33,16 +33,9 @@
         to listeners like you, these are the hottest jokes right now!
       <p>
       <p class="tragedy">
-        <strong>Tragedy</strong>: there are no awesome jokes. You should call <span class="label">(647) 931-1253</span>  and tell us one.
+        <strong>Call us!</strong>: You should call <span class="label">(647) 931-1253</span>  and tell us a joke!.
       </p>
 
-      {% if jokes %}
-      <ol>
-        {% for joke in jokes %}
-        <li>{{ joke }}</li>
-        {% endfor %}
-      </ol>
-      {% else %}
       <ol>
         <li class="joke">
             <a href="http://soundcloud.com/matas/hobnotropic" class="sc-player">What a joke</a>
@@ -64,7 +57,6 @@
             </div>
         </li>
       </ol>
-      {% endif %}
 
     </div> <!-- /container -->
 

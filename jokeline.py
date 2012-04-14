@@ -73,15 +73,6 @@ def make_xml_response(template, **context):
     return response
 
 
-@app.route('/twilio/voice', methods=['GET', 'POST'])
-def twilio_voice():
-    """
-    A test URL.
-    """
-    url = get_sc_url(43112949)
-    return make_xml_response("twilio/voice.xml", joke_url=url)
-
-
 @app.route('/jokes', methods=['GET', 'POST'])
 def jokes():
     if request.method == 'GET':

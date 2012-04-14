@@ -87,6 +87,7 @@ app.route('/jokes/', methods=['POST'])
 def create_joke():
     # Pull data out of XML request.
     # Create a new joke.
+    print request
     print request.form["Digits"]
     return render_template("joke.xml", joke=joke)
 

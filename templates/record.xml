@@ -1,4 +1,4 @@
 <Response>
   <Say>Please tell me your name and your joke. Press pound when you're done.</Say>
-  <Record action="/jokes/record" maxLength="300">
+  <Record action="/jokes/record" maxLength="300"/>
 </Response>

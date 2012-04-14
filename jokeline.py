@@ -1,4 +1,5 @@
 import sqlite3
+import tempfile
 from flask import g, make_response, redirect, request, render_template, url_for, Flask
 import soundcloud
 import requests
@@ -9,11 +10,10 @@ import requests
 app = Flask(__name__)
 app.config.from_object('settings')
 
-sc_client = soundcloud.Client(client_id=app.config['SOUNDCLOUD_ID'])
-sc_client = soundcloud.Client(client_id=SOUNDCLOUD_ID,
-                              client_secret=app.config['SOUNDCLOUD_SECRET',
+sc_client = soundcloud.Client(client_id=app.config['SOUNDCLOUD_ID'],
+                              client_secret=app.config['SOUNDCLOUD_SECRET'],
                               username=app.config['SOUNDCLOUD_USERNAME'],
-                              password==app.config['SOUNDCLOUD_PASSWORD'])
+                              password=app.config['SOUNDCLOUD_PASSWORD'])
 
 
 # Poor Man's 'ORM' with SQLite3
@@ -74,13 +74,14 @@ def twilio_voice():
     return make_xml_response("twilio/voice.xml", joke_url=url)
 
 
-@app.route('/jokes/', methods=['GET', 'POST'])
+@app.route('/jokes', methods=['GET', 'POST'])
 def jokes():
     if request.method == 'GET':
         jokes = query_db('SELECT * FROM jokes ORDER BY rank')
         return make_xml_response("jokes.xml", jokes=jokes)
     elif request.method == 'POST':
         # Create a new joke.
+        print request.form['Digits']
         if request.form['Digits'] == '1':
             #user wants to record
             return make_xml_response("record.xml")
@@ -92,14 +93,18 @@ def jokes():
 def record():
     joke_url = request.form['RecordingUrl']
     j = requests.get(joke_url)
-    track = soundcloud.post('/tracks', track={
+    fh, filename = tempfile.mkstemp()
+    f = open(filename, 'w')
+    f.write(j.raw.read())	
+    f.close()
+    track = sc_client.post('/tracks', track={
             'title': 'joke',
             'sharing': 'public',
-            'asset_data': j.raw,
-            "downloadable": true,
+            'asset_data': open(filename, 'rb')
             })
     query_db("INSERT INTO jokes ('joke', 'track_id', 'rank') values  (?, ?, ?)", [track.title, track.id, 0])
-
+    
+    return make_xml_response("decline.xml")
 
 @app.route('/jokes/random', methods=['GET'])
 def random_joke():

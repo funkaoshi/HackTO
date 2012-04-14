@@ -1,7 +1,7 @@
 import sqlite3
 from flask import g, make_response, redirect, request, render_template, url_for, Flask
 import soundcloud
-
+import requests
 
 
 # configuration
@@ -94,8 +94,17 @@ def jokes():
 
 @app.route('/jokes/record', methods=['POST'])
 def record():
-    
+    joke_url = request.form['RecordingUrl']
+    j = requests.get(joke_url)
+    track = soundcloud.post('/tracks', track={
+            'title': 'joke',
+            'sharing': 'public',
+            'asset_data': j.raw,
+            "downloadable": true,
+            })
+    query_db("INSERT INTO jokes ('joke', 'track_id', 'rank') values  (?, ?, ?)", [track.title, track.id, 0])
 
+print track.title
 @app.route('/jokes/random', methods=['GET'])
 def random_joke():
     joke = query_db('SELECT * FROM jokes ORDER BY RANDOM() LIMIT 1;', one=True)

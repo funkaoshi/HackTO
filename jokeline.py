@@ -77,13 +77,13 @@ def random_joke():
     return render_template("joke.xml", joke=joke)
 
 
-@app.route('/jokes/<int:joke_id>', methods=['GET']):
+@app.route('/jokes/<int:joke_id>', methods=['GET'])
 def get_joke():
     joke = query_db('SELECT * FROM jokes WHERE id = ? LIMIT 1;', [joke_id], one=True)
     return render_template("joke.xml", joke=joke)
 
 
-app.route('/jokes/', methods=['POST']):
+app.route('/jokes/', methods=['POST'])
 def create_joke():
     # Pull data out of XML request.
     # Create a new joke.
@@ -91,7 +91,7 @@ def create_joke():
     return render_template("joke.xml", joke=joke)
 
 
-app.route('/jokes/<int:joke_id>', methods=['PUT']):
+app.route('/jokes/<int:joke_id>', methods=['PUT'])
 def update_joke():
     # Pull data out of request XML.
     # Lookup joke.

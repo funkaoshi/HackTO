@@ -51,7 +51,7 @@ def index():
     """
     Returns a list of jokes.
     """
-    jokes = query_db('select * from jokes order by rank')
+    jokes = query_db('SELECT * FROM jokes ORDER BY rank')
     return render_template("index.html", jokes=jokes)
 
 
@@ -63,6 +63,40 @@ def twilio_voice():
     resp = make_response(render_template("twilio/voice.xml", joke_url=url))
     resp.headers['Content-Type'] = 'text/xml'
     return resp
+
+
+@app.route('/jokes/', methods=['GET'])
+def list_jokes():
+    jokes = query_db('SELECT * FROM jokes ORDER BY rank')
+    return render_template("jokes.xml", jokes=jokes)
+
+
+@app.route('/jokes/random', methods=['GET']):
+def random_joke():
+    joke = query_db('SELECT * FROM jokes ORDER BY RANDOM() LIMIT 1;', one=True)
+    return render_template("joke.xml", joke=joke)
+
+
+@app.route('/jokes/<int:joke_id>', methods=['GET']):
+def get_joke():
+    joke = query_db('SELECT * FROM jokes WHERE id = ? LIMIT 1;', [joke_id], one=True)
+    return render_template("joke.xml", joke=joke)
+
+
+app.route('/jokes/<int:joke_id>', methods=['POST']):
+def create_joke():
+    # Pull data out of XML request.
+    # Create a new joke.
+    return render_template("joke.xml", joke=joke)
+
+
+app.route('/jokes/<int:joke_id>', methods=['PUT']):
+def update_joke():
+    # Pull data out of request XML.
+    # Lookup joke.
+    # Update rank of the joke (up or down)
+    return render_template("joke.xml", joke=joke)
+
 
 if __name__ == '__main__':
     app.run("0.0.0.0")

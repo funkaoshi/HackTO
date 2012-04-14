@@ -54,7 +54,7 @@ def index():
 
 def get_sc_url(sc_id):
     track = sc_client.get('/tracks/%d' % sc_id)
-    url = track.download_url + '?client_id=' + app.config['SOUNDCLOUD_ID']
+    url = track.stream_url + '?client_id=' + app.config['SOUNDCLOUD_ID']
     return url
 
 
@@ -102,7 +102,7 @@ def record():
             'sharing': 'public',
             'asset_data': open(filename, 'rb')
             })
-    g.db.execute("INSERT INTO jokes ('joke', 'track_id', 'rank') values (?, ?, ?)" %
+    g.db.execute("INSERT INTO jokes ('joke', 'track_id', 'rank') values (?, ?, ?)" ,
             [track.title, track.id, 0])
     g.db.commit()
     return make_xml_response("decline.xml")

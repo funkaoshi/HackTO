@@ -4,23 +4,16 @@ import soundcloud
 import requests
 
 
-# configuration
-
-DATABASE = 'jokes.db'
-SECRET_KEY = 'Y\xf6\xf2j\xc9\xc5\xbc\xde{\xae\x9a\xc8\x8dZ0\x9e\x14\xb6\x90\xd7\x02\x03\xf0\x1a'
-DEBUG = True
-SOUNDCLOUD_ID = '790496b735a696eb3261822846618016'
-SOUNDCLOUD_SECRET = '838cb0dd9b5bcb39b4036ae222a1c124'
-SOUNDCLOUD_USERNAME = 'maxim@ontoillogical.com'
-SOUNDCLOUD_PASSWORD = 'Kz4jrJJg$%t2n:J'
-
-
-
 # create application
 
 app = Flask(__name__)
-app.config.from_object(__name__)
-sc_client = soundcloud.Client(client_id=SOUNDCLOUD_ID, client_secret=SOUNDCLOUD_SECRET, username=SOUNDCLOUD_USERNAME, password=SOUNDCLOUD_PASSWORD)
+app.config.from_object('settings')
+
+sc_client = soundcloud.Client(client_id=app.config['SOUNDCLOUD_ID'])
+sc_client = soundcloud.Client(client_id=SOUNDCLOUD_ID,
+                              client_secret=app.config['SOUNDCLOUD_SECRET',
+                              username=app.config['SOUNDCLOUD_USERNAME'],
+                              password==app.config['SOUNDCLOUD_PASSWORD'])
 
 
 # Poor Man's 'ORM' with SQLite3
@@ -62,7 +55,7 @@ def index():
 
 def get_sc_url(sc_id):
     track = sc_client.get('/tracks/%d' % sc_id)
-    url = track.download_url + '?client_id=' + SOUNDCLOUD_ID
+    url = track.download_url + '?client_id=' + app.config['SOUNDCLOUD_ID']
     return url
 
 

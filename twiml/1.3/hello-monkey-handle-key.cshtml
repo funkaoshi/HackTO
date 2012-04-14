@@ -1,0 +1,14 @@
+﻿@{    
+    if (Request["Digits"]!=null && Request["Digits"]!="1")
+    {
+        Response.Redirect("hello-monkey.cshtml", true);
+    }
+
+    // the user pressed 1, connect the call to 310-555-1212 
+    Response.ContentType = "text/xml";
+}
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <Dial>+13105551212</Dial>
+    <Say>The call failed or the remote party hung up. Goodbye.</Say>
+</Response>

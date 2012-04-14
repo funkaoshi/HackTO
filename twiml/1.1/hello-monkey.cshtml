@@ -1,0 +1,24 @@
+﻿@{
+    // make an associative array of senders we know, indexed by phone number
+    Dictionary<string, string> people = new Dictionary<string, string>() { 
+        {"+14158675309","Curious George"},
+        {"+14158675310","Boots"},
+        {"+14158675311","Virgil"},
+        {"+14158675312","Marcel"}
+    };
+
+    // if the caller is known, then greet them by name
+    // otherwise, consider them just another monkey
+    string name = "Monkey";
+    if (Request["From"] != null && people.Keys.Contains(Request["From"]))
+    {
+        name = people[Request["From"]];
+    }
+
+    // now greet the caller
+    Response.ContentType = "text/xml";
+}
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <Say>Hello @name.</Say>
+</Response> 

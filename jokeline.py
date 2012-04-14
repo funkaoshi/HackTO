@@ -59,7 +59,7 @@ def index():
 @app.route('/twilio/voice', methods=['GET', 'POST'])
 def twilio_voice():
     track = sc_client.get('/resolve', url='http://soundcloud.com/jokeline/untitled-recording')
-    url = track.download_url + '?client_id=SOUNDCLOUD_ID'
+    url = track.download_url + '?client_id=' + SOUNDCLOUD_ID
     resp = make_response(render_template("twilio/voice.xml", joke_url=url))
     resp.headers['Content-Type'] = 'text/xml'
     return resp

@@ -1,4 +1,6 @@
 <Response>
-    <Say>Welcome to the Eighties Joke Line.  Your joke is:</Say>
-    <Play>{{ joke_url }}</Play>
+    <Say>Welcome to the Eighties Joke Line.</Say>
+    <Play>{{ joke_url}}</Play>
+    <Say>Would you like to tell me a joke?</Say>
+    <Gather action="/jokes/" timeout="2" />
 </Response>

@@ -39,6 +39,15 @@ def query_db(query, args=(), one=False):
                for idx, value in enumerate(row)) for row in cur.fetchall()]
     return (rv[0] if rv else None) if one else rv
 
+
+def insert_into_db(table, columns, values):
+    columns = ', '.join(["'%s'" % column for column in columns])
+    placeholders = ', '.join(['?' for i in range(len(values))])
+    query = "INSERT INTO %s (%s) VALUES (%s)" % (table, columns, placeholders)
+    g.db.execute(query, values)
+    g.db.commit()
+
+
 # The Application
 
 @app.route('/')
@@ -62,15 +71,6 @@ def make_xml_response(template, **context):
     response = make_response(render_template(template, **context))
     response.headers['Content-Type'] = 'text/xml'
     return response
-
-
-@app.route('/twilio/voice', methods=['GET', 'POST'])
-def twilio_voice():
-    """
-    A test URL.
-    """
-    url = get_sc_url(43112949)
-    return make_xml_response("twilio/voice.xml", joke_url=url)
 
 
 @app.route('/jokes', methods=['GET', 'POST'])
@@ -102,9 +102,7 @@ def record():
             'sharing': 'public',
             'asset_data': open(filename, 'rb')
             })
-    g.db.execute("INSERT INTO jokes ('joke', 'track_id', 'rank') values (?, ?, ?)" ,
-            [track.title, track.id, 0])
-    g.db.commit()
+    insert_into_db('jokes', ['joke', 'track_id', 'rank'], [track.title, track.id, 0])
     return make_xml_response("decline.xml")
 
 
@@ -113,12 +111,6 @@ def random_joke():
     joke = query_db('SELECT * FROM jokes ORDER BY RANDOM() LIMIT 1;', one=True)
     joke['url'] = get_sc_url(joke['track_id'])
     return make_xml_response("joke.xml", joke=joke)
-
-
-@app.route('/jokes/<int:joke_id>', methods=['GET'])
-def get_joke():
-    joke = query_db('SELECT * FROM jokes WHERE id = ? LIMIT 1;', [joke_id], one=True)
-    return render_template("joke.xml", joke=joke)
 
 
 app.route('/jokes/<int:joke_id>', methods=['PUT'])

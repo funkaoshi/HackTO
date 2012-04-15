@@ -42,7 +42,7 @@ def query_db(query, args=(), one=False):
 
 def insert_into_db(table, columns, values):
     columns = ', '.join(["'%s'" % column for column in columns])
-    placeholders = ', '.join(['?' for i in range(len(values))])
+    placeholders = ', '.join(['?'] * len(columns))
     query = "INSERT INTO %s (%s) VALUES (%s)" % (table, columns, placeholders)
     g.db.execute(query, values)
     g.db.commit()

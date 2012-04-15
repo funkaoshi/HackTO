@@ -118,7 +118,7 @@ def record_joke():
     Save the recorded joke and hangup.
     """
     # TODO: Do this outside the webapp.
-    save_record(request.form['RecordingUrl'])
+    save_recording(request.form['RecordingUrl'])
     return make_xml_response("done.xml")
 
 @app.route('/jokes/<int:joke_id>', methods=['PUT'])

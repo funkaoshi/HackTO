@@ -15,8 +15,6 @@
         <script type="text/javascript"  src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
         <script type="text/javascript" src="/static/js/jquery.js"></script>
-        <script type="text/javascript" src="/static/js/soundcloud.player.api.js"></script>
-        <script type="text/javascript" src="/static/js/sc-player.js"></script>
     </head>
     <body>
         <div class="container row-fluid">
@@ -27,7 +25,7 @@
                 <p>Here's a joke to whet your appetite:</p>
                 <ul class="jokes">
                     <li class="joke">
-                        <a href="{{ joke.permalink_url }}" class="sc-player">What a joke</a>
+                        <iframe width="100%" height="166" scrolling="no" frameborder="no" src="http://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F{{ joke.id }}&amp;auto_play=false&amp;show_artwork=false&amp;color=fa8bd4"></iframe>
                     </li>
                 </ul>
                 <p class="tragedy">For more jokes and to add your own, you should <strong>call us</strong> at <span class="label">(647) 931-1253</span>. Tell us a joke!.</p>

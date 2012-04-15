@@ -1,6 +1,12 @@
 body {
   background-image: url('/static/img/gradient_squares.png');
 }
+a {
+  color: #f66dc7;
+}
+a:hover {
+  color: #fa8bd4;
+}
 .sc-player {
   width: 500px;
   margin-bottom: 0;
@@ -11,25 +17,33 @@ body {
   vertical-align: inherit;
 }
 .container {
+  max-width: 600px;
   overflow: hidden;
-  padding: 60px;
-  padding-top: 40px;
+  padding: 0 20px;
+  margin: 40px auto 20px auto;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.container img {
+  max-width: 100%;
 }
 h1 {
   font-size: 48px;
+  padding-bottom: 25px;
   margin-bottom: 25px;
   text-align: center;
-  border-color: #999;
-}
-ol {
-  list-style: none;
-  margin-left: 0;
+  border-bottom: 1px #999 dotted;
 }
 p,
 li {
   font-size: 16px;
   line-height: 1.5;
   margin-bottom: 16px;
+}
+.jokes {
+  list-style: none;
+  margin-left: 0;
 }
 .joke {
   width: 500px;
@@ -46,4 +60,9 @@ li {
 }
 .joke .time {
   float: right;
+}
+footer {
+  padding-top: 25px;
+  margin-top: 25px;
+  border-top: 1px #999 dotted;
 }

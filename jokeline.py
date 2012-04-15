@@ -1,8 +1,11 @@
+from celery.task import task
+import os
+import requests
+import soundcloud
 import sqlite3
 import tempfile
+
 from flask import g, make_response, redirect, request, render_template, url_for, Flask
-import soundcloud
-import requests
 
 
 # create application
@@ -36,12 +39,13 @@ def query_db(query, args=(), one=False):
                for idx, value in enumerate(row)) for row in cur.fetchall()]
     return (rv[0] if rv else None) if one else rv
 
-def insert_into_db(table, columns, values):
+def insert_into_db(table, columns, values, db=None):
+    db = db or g.db
     columns = ', '.join(["'%s'" % column for column in columns])
-    placeholders = ', '.join(['?'] * len(columns))
+    placeholders = ', '.join(['?'] * len(values))
     query = "INSERT INTO %s (%s) VALUES (%s)" % (table, columns, placeholders)
-    g.db.execute(query, values)
-    g.db.commit()
+    db.execute(query, values)
+    db.commit()
 
 
 # Helpers
@@ -62,12 +66,16 @@ def make_xml_response(template, **context):
     response.headers['Content-Type'] = 'text/xml'
     return response
 
+@task(name='jokeline.save_recording', ignore_result=True)
 def save_recording(joke_url):
     """
     Pulls the recording from Twillio down into a random file, and then uploads
     it to Soundcloud. Once this is complete we store a new entry in our
     database of jokes.
     """
+    # TODO: We should be catching exceptions and cleaning up the tempfiles.
+    logger = save_recording.get_logger()
+    logger.info("Downloading %s" % joke_url)
     j = requests.get(joke_url)
     fh, filename = tempfile.mkstemp()
     f = open(filename, 'w')
@@ -78,7 +86,12 @@ def save_recording(joke_url):
             'sharing': 'public',
             'asset_data': open(filename, 'rb')
             })
-    insert_into_db('jokes', ['joke', 'track_id', 'rank'], [track.title, track.id, 0])
+    logger.info("Saved joke to Soundcloud as Track %d" % track.id)
+    os.remove(filename)
+    db = connect_db()
+    insert_into_db('jokes', ['joke', 'track_id', 'rank'],
+            [track.title, track.id, 0], db=db)
+    db.close()
 
 
 # The Web Application
@@ -117,8 +130,7 @@ def record_joke():
     """
     Save the recorded joke and hangup.
     """
-    # TODO: Do this outside the webapp.
-    save_recording(request.form['RecordingUrl'])
+    save_recording.delay(request.form['RecordingUrl'])
     return make_xml_response("done.xml")
 
 @app.route('/jokes/<int:joke_id>', methods=['PUT'])

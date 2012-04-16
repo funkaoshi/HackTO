@@ -35,7 +35,6 @@ def get_sc_url(track):
 def get_random_joke():
     return get_sc(r.srandmember('tracks'))
 
-
 def make_xml_response(template, **context):
     response = make_response(render_template(template, **context))
     response.headers['Content-Type'] = 'text/xml'
@@ -64,6 +63,7 @@ def save_recording(joke_url):
     logger.info("Saved joke to Soundcloud as Track %d" % track.id)
     os.remove(filename)
     r.sadd('tracks', str(track.id))
+
 
 # The Web Application
 

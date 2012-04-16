@@ -1,6 +1,7 @@
 from celery.task import task
 import os
 import requests
+import redis
 import soundcloud
 import sqlite3
 import tempfile
@@ -19,35 +20,7 @@ sc_client = soundcloud.Client(client_id=app.config['SOUNDCLOUD_ID'],
                               password=app.config['SOUNDCLOUD_PASSWORD'])
 
 
-# Poor Man's 'ORM' with SQLite3
-
-def connect_db():
-    return sqlite3.connect(app.config['DATABASE'])
-
-@app.before_request
-def before_request():
-    g.db = connect_db()
-
-@app.teardown_request
-def teardown_request(exception):
-    if hasattr(g, 'db'):
-        g.db.close()
-
-def query_db(query, args=(), one=False):
-    cur = g.db.execute(query, args)
-    rv = [dict((cur.description[idx][0], value)
-               for idx, value in enumerate(row)) for row in cur.fetchall()]
-    return (rv[0] if rv else None) if one else rv
-
-def insert_into_db(table, columns, values, db=None):
-    db = db or g.db
-    columns = ', '.join(["'%s'" % column for column in columns])
-    placeholders = ', '.join(['?'] * len(values))
-    query = "INSERT INTO %s (%s) VALUES (%s)" % (table, columns, placeholders)
-    db.execute(query, values)
-    db.commit()
-
-
+r = redis.StrictRedis(host=app.config['REDIS_HOST'], port=app.config['REDIS_PORT'], db=app.config['REDIS_DB']) 
 # Helpers
 
 def get_sc(sc_id):
@@ -57,9 +30,8 @@ def get_sc_url(sc_id):
     return get_sc(sc_id).stream_url + '?client_id=' + app.config['SOUNDCLOUD_ID']
 
 def get_random_joke():
-    joke = query_db('SELECT * FROM jokes ORDER BY RANDOM() LIMIT 1;', one=True)
-    joke['url'] = get_sc_url(joke['track_id'])
-    return joke
+    return get_sc(r.srandmember('tracks'))
+    
 
 def make_xml_response(template, **context):
     response = make_response(render_template(template, **context))
@@ -88,11 +60,7 @@ def save_recording(joke_url):
             })
     logger.info("Saved joke to Soundcloud as Track %d" % track.id)
     os.remove(filename)
-    db = connect_db()
-    insert_into_db('jokes', ['joke', 'track_id', 'rank'],
-            [track.title, track.id, 0], db=db)
-    db.close()
-
+    r.sadd('tracks', track_id)
 
 # The Web Application
 

@@ -1,43 +1,58 @@
 // simpless:!minify
 
 body {
-	background: url('/static/img/gradient_squares.png');
-    padding: 60px;
-	padding-top: 40px;
+	background-image: url('/static/img/gradient_squares.png');
+}
+
+a {
+	color: #f66dc7;
+	&:hover {
+		color: #fa8bd4;
+	}
+}
+
+.label {
+	background: #f66dc7;
+	font-size: 14px;
+	vertical-align: inherit;
 }
 
 .container {
+	max-width: 700px;
 	overflow: hidden;
+	padding: 0 20px;
+	margin: 40px auto 20px auto;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	img {
+		max-width: 100%;
+	}
 }
 
-.jokes {
-    margin: 0 auto;
-    width:640px;
-}
-.jokes h1 {
+h1 {
     font-size: 48px;
-    margin-bottom: 26px;
+	padding-bottom: 25px;
+    margin-bottom: 25px;
 	text-align: center;
-	border-color: #999;
+	border-bottom: 1px #999 dotted;
 }
 
-.jokes p, .jokes li {
+p, li {
     font-size: 16px;
     line-height: 1.5;
     margin-bottom: 16px;
 }
 
-.jokes ol {
+.jokes {
     list-style: none;
     margin-left: 0;
 }
 
 .joke {
-	width: 500px;
-	margin-bottom: 30px;
+	margin-bottom: 15px;
 	.meta {
 		color: #777;
-		display: block;
 		font-size: 12px;
 		overflow: hidden;
 	}
@@ -50,13 +65,11 @@ body {
 	}
 }
 
-.sc-player {
-	width: 500px;
-	margin-bottom: 0;
-}
-
-.label {
-	background: #f66dc7;
-	font-size: 14px;
-	vertical-align: inherit;
+footer {
+	padding-top: 25px;
+	margin-top: 25px;
+	border-top: 1px #999 dotted;
+	p {
+		font-size: 12px;
+	}
 }

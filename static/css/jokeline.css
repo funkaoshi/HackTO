@@ -12,6 +12,9 @@ a:hover {
   font-size: 14px;
   vertical-align: inherit;
 }
+.label a {
+  color: #fff;
+}
 .container {
   max-width: 700px;
   overflow: hidden;

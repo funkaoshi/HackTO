@@ -60,7 +60,7 @@ def save_recording(joke_url):
             })
     logger.info("Saved joke to Soundcloud as Track %d" % track.id)
     os.remove(filename)
-    r.sadd('tracks', track_id)
+    r.sadd('tracks', str(track.id))
 
 # The Web Application
 

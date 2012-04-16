@@ -19,8 +19,11 @@ sc_client = soundcloud.Client(client_id=app.config['SOUNDCLOUD_ID'],
                               username=app.config['SOUNDCLOUD_USERNAME'],
                               password=app.config['SOUNDCLOUD_PASSWORD'])
 
+r = redis.StrictRedis(host=app.config['REDIS_HOST'],
+                      port=app.config['REDIS_PORT'],
+                      db=app.config['REDIS_DB'])
 
-r = redis.StrictRedis(host=app.config['REDIS_HOST'], port=app.config['REDIS_PORT'], db=app.config['REDIS_DB']) 
+
 # Helpers
 
 def get_sc(sc_id):
@@ -31,7 +34,6 @@ def get_sc_url(track):
 
 def get_random_joke():
     return get_sc(r.srandmember('tracks'))
-    
 
 def make_xml_response(template, **context):
     response = make_response(render_template(template, **context))
@@ -61,6 +63,7 @@ def save_recording(joke_url):
     logger.info("Saved joke to Soundcloud as Track %d" % track.id)
     os.remove(filename)
     r.sadd('tracks', str(track.id))
+
 
 # The Web Application
 

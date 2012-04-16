@@ -27,8 +27,15 @@ r = redis.StrictRedis(host=app.config['REDIS_HOST'],
 # Helpers
 
 def get_sc(sc_id):
-    return sc_client.get('/tracks/%s' % sc_id)
-
+    try:
+        track = sc_client.get('/tracks/%s' % sc_id)
+    except: 
+        sc_client = soundcloud.Client(client_id=app.config['SOUNDCLOUD_ID'],
+                                      client_secret=app.config['SOUNDCLOUD_SECRET'],
+                                      username=app.config['SOUNDCLOUD_USERNAME'],
+                                      password=app.config['SOUNDCLOUD_PASSWORD'])
+        track = sc_client.get('/tracks/%s' % sc_id)
+        return track
 def get_sc_url(track):
     return track.stream_url + '?client_id=' + app.config['SOUNDCLOUD_ID']
 

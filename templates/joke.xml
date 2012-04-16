@@ -1,6 +1,6 @@
 <Response>
     <Say>Welcome to the Eighties Joke Line.</Say>
-    <Play>{{ joke.stream_url}}</Play>
+    <Play>{{ joke_url}}</Play>
     <Say>Would you like to tell me a joke? Press 1 for yes and 2 for no</Say>
     <Gather action="/jokes" timeout="2" numDigits="1"/>
 </Response>

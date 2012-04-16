@@ -24,10 +24,10 @@ r = redis.StrictRedis(host=app.config['REDIS_HOST'], port=app.config['REDIS_PORT
 # Helpers
 
 def get_sc(sc_id):
-    return sc_client.get('/tracks/%d' % sc_id)
+    return sc_client.get('/tracks/%s' % sc_id)
 
-def get_sc_url(sc_id):
-    return get_sc(sc_id).stream_url + '?client_id=' + app.config['SOUNDCLOUD_ID']
+def get_sc_url(track):
+    return track.stream_url + '?client_id=' + app.config['SOUNDCLOUD_ID']
 
 def get_random_joke():
     return get_sc(r.srandmember('tracks'))
@@ -79,7 +79,7 @@ def random_joke():
     """
     Returns a random joke to the caller.
     """
-    return make_xml_response("joke.xml", joke=get_random_joke())
+    return make_xml_response("joke.xml", joke_url=get_sc_url(get_random_joke()))
 
 @app.route('/jokes', methods=['POST'])
 def jokes():

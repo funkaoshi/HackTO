@@ -17,7 +17,7 @@ app.config.from_object('settings')
 sc_client = soundcloud.Client(client_id=app.config['SOUNDCLOUD_ID'],
                               client_secret=app.config['SOUNDCLOUD_SECRET'],
                               username=app.config['SOUNDCLOUD_USERNAME'],
-                              password=app.config['SOUNDCLOUD_PASSWORD']
+                              password=app.config['SOUNDCLOUD_PASSWORD'],
                               scope='non-expiring')
 
 r = redis.StrictRedis(host=app.config['REDIS_HOST'],
